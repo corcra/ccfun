@@ -29,10 +29,12 @@ inspect_factor <- function(d) {
     r$levels <- as.character(unique(d$val))
     r$tab <- with(d, table(as.character(val)))
     r$tab.bysite <- with(d, table(site_id,as.character(val)))
-    # ggplot object to return
-    d <- droplevels(d[item==f.dict[["NHICcode"]]]) # droplevels else forces all into plot
+    d <- droplevels(d) # droplevels else forces all into plot
+    # Plot data only
+    r$plot_data <- d[,.(site_id,val)] 
     # Call ggMMplot via explicit package reference
-    r$plot_data <- ccfun::ggMMplot(d$site_id, d$val, palette="Blues")
+    # ggplot object to return
+    r$plot <- ccfun::ggMMplot(d$site_id, d$val, palette="Blues")
     return(r)
 }
 
@@ -66,6 +68,7 @@ inspect_item <- function(d, f.dict, ...) {
     r$data.dim <- dim(d)
     # Now subset the data
     df <- d[item==f.dict[["NHICcode"]]]
+    r$length <- nrow(df)
     
     # "numeric",
     if (r$Datatype=="numeric") {

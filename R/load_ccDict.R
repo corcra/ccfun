@@ -13,7 +13,7 @@
 load_ccDict <- function(path=NULL) {
     ccdata.dict <- paste0(system.file("data", package="ccdata"), "/ITEM_REF.yaml")
     if (file.exists(ccdata.dict)) {
-        ccdata.dict <- yaml.load_file(ccdata.dict)
+        ccdata.dict <- yaml::yaml.load_file(ccdata.dict)
     } else {
         if (is.null(path)) {
             ccdata.dict.bu <- "/Users/steve/aor/academic/hic/critical-care/dataset/N_DataItems.yml"
@@ -21,6 +21,6 @@ load_ccDict <- function(path=NULL) {
             ccdata.dict.bu <- path
         }
         assert_that(file.exists(ccdata.dict.bu))
-        ccdata.dict <- yaml.load_file(ccdata.dict.bu)
+        ccdata.dict <- yaml::yaml.load_file(ccdata.dict.bu)
     }
 }
