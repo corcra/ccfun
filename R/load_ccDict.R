@@ -11,16 +11,11 @@
 #' ccdata.dict <- load_ccDict() # loads using default values
 #' ccdata.dict <- load_ccDict("my/local/path") # alternative fall back path
 load_ccDict <- function(path=NULL) {
-    ccdata.dict <- paste0(system.file("data", package="ccdata"), "/ITEM_REF.yaml")
-    if (file.exists(ccdata.dict)) {
-        ccdata.dict <- yaml::yaml.load_file(ccdata.dict)
-    } else {
-        if (is.null(path)) {
-            ccdata.dict.bu <- "/Users/steve/aor/academic/hic/critical-care/dataset/N_DataItems.yml"
-        } else {
-            ccdata.dict.bu <- path
-        }
-        assert_that(file.exists(ccdata.dict.bu))
-        ccdata.dict <- yaml::yaml.load_file(ccdata.dict.bu)
+    if (is.null(path)) {
+        path <- paste0(system.file("data", package="ccdata"), "/ITEM_REF.yaml")
     }
+    assert_that(file.exists(path))
+    ccdata.dict <- yaml::yaml.load_file(path)
+    print(paste0("*** Returning ccData dictionary from ", path))
+    return(ccdata.dict)
 }
