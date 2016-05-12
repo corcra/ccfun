@@ -9,7 +9,7 @@ inspect_factor(d)
 \arguments{
 \item{d}{data generated from the ccdata::readItems() function}
 
-\item{f.dict}{field dictionary generated from ITEM_REF.yml 
+\item{f.dict}{field dictionary generated from ITEM_REF.yml
 via ccfun::load_ccDict.R}
 
 \item{...}{args to helper functions (e.g. palette="Greens" to ggMMplot)}
@@ -20,15 +20,15 @@ including details broken down by site_id (ICU)
 }
 \description{
 Produces basic summary data for NHIC data items when passed NHIC data
-in the form produced by the readItems() function. Calls seperate helper 
+in the form produced by the readItems() function. Calls seperate helper
 functions for the different data types available.
 }
 \examples{
-Example call to inspect item function
-system.time(r <- inspect_item(rdt, ccdata.dict[["NIHR_HIC_ICU_0108"]]))
+# Example call to inspect item function
+# system.time(r <- inspect_item(rdt, ccdata.dict[["NIHR_HIC_ICU_0108"]]))
 # Example plotting function
-ggplot(r$inspect$plot_data) +
-     geom_freqpoly(aes(x=val, y=..density.., colour=site_id),
-     binwidth=1)
+# ggplot(r$inspect$plot_data) +
+#     geom_freqpoly(aes(x=val, y=..density.., colour=site_id),
+#    binwidth=1)
 }
 

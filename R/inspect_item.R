@@ -1,25 +1,25 @@
-#' @title Inspects NHIC data items 
+#' @title Inspects NHIC data items
 #'
 #' @description
 #' Produces basic summary data for NHIC data items when passed NHIC data
-#' in the form produced by the readItems() function. Calls seperate helper 
+#' in the form produced by the readItems() function. Calls seperate helper
 #' functions for the different data types available.
 #'
 #' @import data.table
 #' @param d data generated from the ccdata::readItems() function
-#' @param f.dict field dictionary generated from ITEM_REF.yml 
+#' @param f.dict field dictionary generated from ITEM_REF.yml
 #' via ccfun::load_ccDict.R
 #' @param ... args to helper functions (e.g. palette="Greens" to ggMMplot)
 #' @return r (a list) containing details of the item and a plot
 #' including details broken down by site_id (ICU)
-#' 
+#'
 #' @examples
-#' Example call to inspect item function
-#' system.time(r <- inspect_item(rdt, ccdata.dict[["NIHR_HIC_ICU_0108"]]))
+#' # Example call to inspect item function
+#' # system.time(r <- inspect_item(rdt, ccdata.dict[["NIHR_HIC_ICU_0108"]]))
 #' # Example plotting function
-#' ggplot(r$inspect$plot_data) +
-#'      geom_freqpoly(aes(x=val, y=..density.., colour=site_id),
-#'      binwidth=1)
+#' # ggplot(r$inspect$plot_data) +
+#' #     geom_freqpoly(aes(x=val, y=..density.., colour=site_id),
+#' #    binwidth=1)
 
 
 inspect_factor <- function(d) {
@@ -31,7 +31,7 @@ inspect_factor <- function(d) {
     r$tab.bysite <- with(d, table(site_id,as.character(val)))
     d <- droplevels(d) # droplevels else forces all into plot
     # Plot data only
-    r$plot_data <- d[,.(site_id,val)] 
+    r$plot_data <- d[,.(site_id,val)]
     # Call ggMMplot via explicit package reference
     # ggplot object to return
     r$plot <- ccfun::ggMMplot(d$site_id, d$val, palette="Blues")
@@ -69,7 +69,7 @@ inspect_item <- function(d, f.dict, ...) {
     # Now subset the data
     df <- d[item==f.dict[["NHICcode"]]]
     r$length <- nrow(df)
-    
+
     # "numeric",
     if (r$Datatype=="numeric") {
         r$inspect <- inspect_numeric(df)

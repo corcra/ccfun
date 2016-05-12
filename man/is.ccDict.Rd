@@ -17,6 +17,6 @@ Checks that the object is a list with items named by their HIC code
 in the "NHIC_HIC_ICU_nnnn" format where n is [0,9]
 }
 \examples{
-is.ccDict(d)
+# is.ccDict(d)
 }
 

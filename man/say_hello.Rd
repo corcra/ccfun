@@ -22,6 +22,6 @@ title (the first line) and a description.
 This is simply here for testing
 }
 \examples{
-say_hello("Steve")
+# say_hello("Steve")
 }
 

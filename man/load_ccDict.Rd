@@ -19,7 +19,7 @@ Work with YAML file **NOT** with data.checklist
 Extract file from ccdata package if possible
 }
 \examples{
-ccdata.dict <- load_ccDict() # loads using default values
-ccdata.dict <- load_ccDict("my/local/path") # alternative fall back path
+# ccdata.dict <- load_ccDict() # loads using default values
+# ccdata.dict <- load_ccDict("my/local/path") # alternative fall back path
 }
 
