@@ -25,7 +25,7 @@ gen_sofa_k <- function(dt, creat_, uvol24h_ = NULL) {
 
     # appending _ to var names for readability and to ensure uses scoped version
 
-    library(data.table)
+    # library(data.table)
     # data.table changes the object in place unless you use dt1 <- copy(dt)
     # so passing data.tables via function is actually just passing a reference
 

@@ -23,7 +23,7 @@ gen_sofa_c <- function(dt, map_, norad_, adr_=NULL, dopa_=NULL, dobu_=NULL, vaso
     # appending _ to var names for readability and to ensure uses scoped version
     # requires map AND norad, other drugs optional
 
-    library(data.table)
+    # library(data.table)
     # data.table changes the object in place unless you use dt1 <- copy(dt)
     # so passing data.tables via function is actually just passing a reference
 

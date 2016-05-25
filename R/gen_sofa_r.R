@@ -26,7 +26,7 @@ gen_sofa_r <- function(dt, pf_, ppv_ = NULL) {
     # requires pf_ AND ppv_ (positive pressure vent)
 
 
-    library(data.table)
+    # library(data.table)
     # data.table changes the object in place unless you use dt1 <- copy(dt)
     # so passing data.tables via function is actually just passing a reference
 

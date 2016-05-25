@@ -51,7 +51,7 @@ gen_map <- function(bps, bpd) {
 #' Choose first non-missing
 #' @export
 choose_first_nonmissing <- function(colvalues) {
-    library(purrr)
+    # library(purrr)
     reduce(colvalues, function(x,y) ifelse(!is.na(x), x, y))
 }
 

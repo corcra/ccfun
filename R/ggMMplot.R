@@ -11,7 +11,7 @@
 
 #' @export
 ggMMplot <- function(var1, var2, palette="YlOrRd"){
-  library(ggplot2)
+  # library(ggplot2)
 
   levVar1 <- length(levels(var1))
   levVar2 <- length(levels(var2))
