@@ -8,6 +8,7 @@
 #' @examples
 #' # is.ccDict(d)
 
+#' @export
 is.ccDict <- function(d) {
     # Check the object is a list of lists
     stopifnot(class(d)[1]=="list" & class(d)[[1]]=="list")

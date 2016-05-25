@@ -1,17 +1,18 @@
 #' @title Generates the SOFA liver score
 #'
 #' @description
-#' Generates the SOFA liver score; requires bilirubin 
+#' Generates the SOFA liver score; requires bilirubin
 #'
 #' @import data.table
 #' @param dt data.table containing physiology data
 #' @param bili_ bilirubin
 #'
 #' @examples
-#' # gen_sofa_l(ddata, bilirubin_ = bilirubin) 
+#' # gen_sofa_l(ddata, bilirubin_ = bilirubin)
 #' # table(ddata$sofa_l, useNA="always")
 #' # ddata[bilirubin>100][sample(nrow(ddata[bilirubin>100]),20), .(bilirubin, sofa_l)]
 
+#' @export
 gen_sofa_l <- function(dt, bili_) {
     #  ================
     #  = SOFA - liver =
@@ -31,10 +32,10 @@ gen_sofa_l <- function(dt, bili_) {
     # Set to NA by default (numeric)
     dt[, `:=`(sofa_l = as.numeric(NA))]
 
-    # Update based on conditions 
+    # Update based on conditions
     # Order of conditions is IMPORTANT
 
-    # SOFA = 0 
+    # SOFA = 0
     dt[get(bili_) < 20, "sofa_l" := 0]
 
     # SOFA = 1

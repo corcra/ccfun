@@ -21,7 +21,6 @@
 #' #     geom_freqpoly(aes(x=val, y=..density.., colour=site_id),
 #' #    binwidth=1)
 
-
 inspect_factor <- function(d) {
     # Use if factor (or) logical
     r <- list()
@@ -60,6 +59,7 @@ inspect_numeric <- function(d) {
     return(r)
 }
 
+#' @export
 inspect_item <- function(d, f.dict, ...) {
     # Generate list to return
     r <- list()

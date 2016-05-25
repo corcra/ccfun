@@ -10,6 +10,8 @@
 #' @return Prints \code{x}
 #' @examples
 #' # say_hello("Steve")
+#'
+#' @export
 say_hello <- function(x) {
     print(paste0("Hello ", x, "!\n"))
 }

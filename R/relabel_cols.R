@@ -36,6 +36,7 @@ dict_translate <- function(dict, value.a, label.in, label.out) {
     }
 }
 
+#' @export
 relabel_cols <- function(dt, label.in, label.out, dict=NULL) {
     library(purrr)
     # If no dictionary passed then use ITEM_REF.yaml

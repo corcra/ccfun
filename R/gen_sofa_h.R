@@ -1,17 +1,18 @@
 #' @title Generates the SOFA haematology score
 #'
 #' @description
-#' Generates the SOFA haematology score; requires platelets 
+#' Generates the SOFA haematology score; requires platelets
 #'
 #' @import data.table
 #' @param dt data.table containing physiology data
 #' @param platelets_ platelets
 #'
 #' @examples
-#' # gen_sofa_h(ddata, platelets_ = platelets) 
+#' # gen_sofa_h(ddata, platelets_ = platelets)
 #' # ddata[platelets<400][sample(nrow(ddata[platelets<400]),20), .(platelets, sofa_h)]
 #' # table(ddata$sofa_h, useNA="always")
 
+#' @export
 gen_sofa_h <- function(dt, platelets_) {
     #  ===============
     #  = SOFA - haem =
@@ -31,10 +32,10 @@ gen_sofa_h <- function(dt, platelets_) {
     # Set to NA by default (numeric)
     dt[, `:=`(sofa_h = as.numeric(NA))]
 
-    # Update based on conditions 
+    # Update based on conditions
     # Order of conditions is IMPORTANT
 
-    # SOFA = 0 
+    # SOFA = 0
     dt[get(platelets_) >= 150, "sofa_h" := 0]
 
     # SOFA = 1

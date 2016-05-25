@@ -9,8 +9,9 @@
 #' # gen_ppv(ddata, time, id, Total_Resp_Rate_Ventil)
 
 #' gen_ppv makes a logical vector if positive pressure ventilated
+#' @export
 gen_ppv <- function(dt, t_=time, id_= id, rrate_ppv_) {
-    # - [ ] TODO(2016-05-20): add in airway and ventilated fields 
+    # - [ ] TODO(2016-05-20): add in airway and ventilated fields
 
     # Non-standard evaluation
     pars <- as.list(match.call()[-1])
@@ -42,11 +43,13 @@ gen_ppv <- function(dt, t_=time, id_= id, rrate_ppv_) {
 
 #' Generate MAP from blood pressure
 #' gen_map derives MAP
+#' @export
 gen_map <- function(bps, bpd) {
     return(bpd + (bps-bpd)/3)
 }
 
 #' Choose first non-missing
+#' @export
 choose_first_nonmissing <- function(colvalues) {
     library(purrr)
     reduce(colvalues, function(x,y) ifelse(!is.na(x), x, y))

@@ -15,6 +15,7 @@
 #' # ddata[rx_adre<0.1][sample(nrow(ddata[rx_adre<0.1]),20), .(map, rx_norad, rx_adre, rx_dopa, rx_vasopr, rx_dobu, sofa_c)]
 
 
+#' @export
 gen_sofa_c <- function(dt, map_, norad_, adr_=NULL, dopa_=NULL, dobu_=NULL, vasop_=NULL) {
     #  =========================
     #  = SOFA - cardiovascular =
@@ -42,10 +43,10 @@ gen_sofa_c <- function(dt, map_, norad_, adr_=NULL, dopa_=NULL, dobu_=NULL, vaso
 
     # Define conditions via dummy vars
 
-    # Update based on conditions 
+    # Update based on conditions
     # Order of conditions is IMPORTANT
 
-    # SOFA = 0 
+    # SOFA = 0
     dt[get(map_) >= 70, "sofa_c" := 0]
 
     # SOFA = 1

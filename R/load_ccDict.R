@@ -11,7 +11,7 @@
 #' # ccdata.dict <- load_ccDict() # loads using default values
 #' # ccdata.dict <- load_ccDict("my/local/path") # alternative fall back path
 
-
+#' @export
 load_ccDict <- function(path=NULL) {
     if (is.null(path)) {
         path <- paste0(system.file("data", package="ccdata"), "/ITEM_REF.yaml")

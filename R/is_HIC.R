@@ -8,6 +8,7 @@
 #' @examples
 #' # is.hic(d)
 
+#' @export
 is.hic <- function(d) {
     stopifnot(class(d)[1]=="data.table")
     # Col names for readItems

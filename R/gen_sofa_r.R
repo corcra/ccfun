@@ -10,10 +10,11 @@
 #' @param ppv_ logical vector for positive pressure ventilation
 #'
 #' @examples
-#' # gen_sofa_r(ddata, pf_ = pf_ratio, ppv_ = ppv) 
+#' # gen_sofa_r(ddata, pf_ = pf_ratio, ppv_ = ppv)
 #' # ddata[pf_ratio<1000/7.6][sample(nrow(ddata[pf_ratio<1000/7.6]),20), .(pf_ratio, Total_Resp_Rate_Ventil, sofa_r)]
 #' # table(ddata$sofa_r, useNA="always")
 
+#' @export
 gen_sofa_r <- function(dt, pf_, ppv_ = NULL) {
     #  ======================
     #  = SOFA - respiratory =
@@ -43,10 +44,10 @@ gen_sofa_r <- function(dt, pf_, ppv_ = NULL) {
     # Default ppv to FALSE unless not missing AND TRUE
     if (!is.null(pars$ppv_)) dt[, ppv_0 := ifelse(!is.na(get(ppv_)), get(ppv_), FALSE)]
 
-    # Update based on conditions 
+    # Update based on conditions
     # Order of conditions is IMPORTANT
 
-    # SOFA = 0 
+    # SOFA = 0
     dt[get(pf_) >= 400/7.6, "sofa_r" := 0]
 
     # SOFA = 1

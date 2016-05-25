@@ -1,17 +1,18 @@
 #' @title Mosaic plot using ggplot.
 #'
 #' @description
-#' Creates a mosaic plot where the dimensions of the cells of a 
+#' Creates a mosaic plot where the dimensions of the cells of a
 #' confusion matrix represent their marginal proportions.
 #'
 #' @details
-#' Credit for initial iteration to 
+#' Credit for initial iteration to
 #' [Edwin](http://stackoverflow.com/a/19258045/992999)
 #' This version adds color brewer options and tidies the labelling
 
+#' @export
 ggMMplot <- function(var1, var2, palette="YlOrRd"){
   library(ggplot2)
-  
+
   levVar1 <- length(levels(var1))
   levVar2 <- length(levels(var2))
 
@@ -41,7 +42,7 @@ ggMMplot <- function(var1, var2, palette="YlOrRd"){
               aes(label = as.character(var1), x = xlabCenter, y = -0.05),
               vjust="inward") +
     # ylabels
-    geom_text(data=ylabData, 
+    geom_text(data=ylabData,
               aes(label = as.character(var2), y = ylabCenter, x = -0.05),
                   vjust="top", angle=90) +
     xlab("") + scale_x_discrete(labels=NULL) +

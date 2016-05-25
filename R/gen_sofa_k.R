@@ -10,10 +10,11 @@
 #' @param rrt_ current use of renal replacement therapy
 #'
 #' @examples
-#' # gen_sofa_k(ddata, creat_ = creatinine) 
+#' # gen_sofa_k(ddata, creat_ = creatinine)
 #' # table(ddata$sofa_k, useNA="always")
 #' # ddata[creatinine < 500][sample(nrow(ddata[creatinine < 500]),20), .(creatinine, sofa_k)]
 
+#' @export
 gen_sofa_k <- function(dt, creat_, uvol24h_ = NULL) {
     #  ================
     #  = SOFA - Renal =
@@ -38,10 +39,10 @@ gen_sofa_k <- function(dt, creat_, uvol24h_ = NULL) {
     # Set to NA by default (numeric)
     dt[, `:=`(sofa_k = as.numeric(NA))]
 
-    # Update based on conditions 
+    # Update based on conditions
     # Order of conditions is IMPORTANT
 
-    # SOFA = 0 
+    # SOFA = 0
     dt[get(creat_) <  110, "sofa_k" := 0]
 
     # SOFA = 1

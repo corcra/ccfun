@@ -1,6 +1,6 @@
 Package: ccfun
 Title: Functions for manipulating the HIC Critical Care data set
-Version: 0.2016.05.20
+Version: 0.2016.05.25
 Authors@R: person("Steve", "Harris", email = "doc@steveharris.me", role = c("aut", "cre"))
 Description: Miscellaneous functions for working with the Critical Care
     HIC code in an attempt to better organise this work.
