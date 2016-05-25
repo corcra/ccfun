@@ -7,11 +7,11 @@
 ggMMplot(var1, var2, palette = "YlOrRd")
 }
 \description{
-Creates a mosaic plot where the dimensions of the cells of a 
+Creates a mosaic plot where the dimensions of the cells of a
 confusion matrix represent their marginal proportions.
 }
 \details{
-Credit for initial iteration to 
+Credit for initial iteration to
 [Edwin](http://stackoverflow.com/a/19258045/992999)
 This version adds color brewer options and tidies the labelling
 }

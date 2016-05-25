@@ -23,5 +23,6 @@ This is simply here for testing
 }
 \examples{
 # say_hello("Steve")
+
 }
 

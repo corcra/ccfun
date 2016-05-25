@@ -7,8 +7,8 @@
 #  =================================
 #' @examples
 #' # gen_ppv(ddata, time, id, Total_Resp_Rate_Ventil)
+#' # gen_ppv makes a logical vector if positive pressure ventilated
 
-#' gen_ppv makes a logical vector if positive pressure ventilated
 #' @export
 gen_ppv <- function(dt, t_=time, id_= id, rrate_ppv_) {
     # - [ ] TODO(2016-05-20): add in airway and ventilated fields
