@@ -14,7 +14,7 @@ is.hic(d)
 }
 \description{
 Checks that the object is a \code{data.table}, and then confirms that
-it contains the 7 columns in the correct order
+it contains the 8 columns in the correct order
 }
 \examples{
 # is.hic(d)

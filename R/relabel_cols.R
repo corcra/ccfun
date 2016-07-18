@@ -19,13 +19,65 @@
 #' # use a custom dictionary (not run)
 #' # relabel_cols(tdt, "dataItem", "shortName", dict=analysis.dict)
 
+#' @export
+relabel_cols <- function(dt, label.in, label.out, dict=NULL) {
+  # library(purrr)
+  # If no dictionary passed then use ITEM_REF.yaml
+  if (is.null(dict)) {
+    # Checks the ccdata package has loaded the ccdata.env
+    # This will be used to relabel the columns
+    stopifnot(exists("ccdata.env"))
+    # If using ITEM_REF.yaml then only the following labels are valid
+    # label.in <- "dataItem"
+    # label.out <- "NHICcode"
+    stopifnot(all(c(label.in, label.out) %in% c("dataItem", "NHICcode", "shortName")))
+    dict <- ccdata.env$ITEM_REF
+  }
+  else {
+    # Make sure dictionary is a list
+    stopifnot(is.list(dict))
+    # - [ ] TODO(2016-05-12): check that label.in and label.out are items in sublists
+  }
+
+  # Depends on data.table setnames function
+  stopifnot("data.table" %in% class(dt))
+
+  # Loop through names
+  names.old <- names(dt)
+  # check column names are unique and stop if not
+  stopifnot(length(unique(names.old)) == length(names.old))
+  # print(names.old)
+  names.new <- vector(mode="character")
+  # print(names.new)
+
+  for (i in 1:length(names.old)) {
+    # now get NHIC code from ccdata.env$ITEM_REF
+    # print(dict_translate(dict, names.old[i], label.in, label.out))
+    names.new[i] <- (dict_translate(dict, names.old[i], label.in, label.out))
+    # update name if found
+    if (!is.na(names.new[i])) {
+      writeLines(paste0("... Translating: ", names.old[i], " to: ", names.new[i]))
+      setnames(dt, names.old[i], names.new[i])
+    } else {
+      writeLines(paste0("NOT translating: ", names.old[i]))
+
+    }
+  }
+  # print(data.table(names.old = names.old, names.new = names.new))
+  # print(names(dt))
+  # - [ ] NOTE(2016-05-12): nothing to return because setnames operates on the data.table passed?
+  return(0)
+}
+
 
 # Helper function
 dict_translate <- function(dict, value.a, label.in, label.out) {
     # Given a list of lists with subitems named label.in and label.out
     # then return the value in label.out given value in label.in
     # Look up the index
-    i <- match(value.a, purrr::map_chr(dict, label.in))
+    X <- purrr::map(dict, label.in)
+    X <- sapply(X, function(x) if(is.null(x)) {return(NA)} else (return(x)))
+    i <- match(value.a, X)
     # Use the index to return the value for the sublist element named label.out
     value.b <- (dict[i][[1]][[label.out]])
     # Return NA instead of NULL else cannot be assigned to a vector
@@ -36,52 +88,3 @@ dict_translate <- function(dict, value.a, label.in, label.out) {
     }
 }
 
-#' @export
-relabel_cols <- function(dt, label.in, label.out, dict=NULL) {
-    # library(purrr)
-    # If no dictionary passed then use ITEM_REF.yaml
-    if (is.null(dict)) {
-        # Checks the ccdata package has loaded the ccdata.env
-        # This will be used to relabel the columns
-        stopifnot(exists("ccdata.env"))
-        # If using ITEM_REF.yaml then only the following labels are valid
-        # label.in <- "dataItem"
-        # label.out <- "NHICcode"
-        stopifnot(all(c(label.in, label.out) %in% c("dataItem", "NHICcode", "shortName")))
-        dict <- ccdata.env$ITEM_REF
-    }
-    else {
-        # Make sure dictionary is a list
-        stopifnot(is.list(dict))
-        # - [ ] TODO(2016-05-12): check that label.in and label.out are items in sublists
-    }
-
-    # Depends on data.table setnames function
-    stopifnot("data.table" %in% class(dt))
-
-    # Loop through names
-    names.old <- names(dt)
-    # check column names are unique and stop if not
-    stopifnot(length(unique(names.old)) == length(names.old))
-    # print(names.old)
-    names.new <- vector(mode="character")
-    # print(names.new)
-
-    for (i in 1:length(names.old)) {
-        # now get NHIC code from ccdata.env$ITEM_REF
-        # print(dict_translate(dict, names.old[i], label.in, label.out))
-        names.new[i] <- (dict_translate(dict, names.old[i], label.in, label.out))
-        # update name if found
-        if (!is.na(names.new[i])) {
-            writeLines(paste0("... Translating: ", names.old[i], " to: ", names.new[i]))
-            setnames(dt, names.old[i], names.new[i])
-        } else {
-            writeLines(paste0("NOT translating: ", names.old[i]))
-
-        }
-    }
-    # print(data.table(names.old = names.old, names.new = names.new))
-    # print(names(dt))
-    # - [ ] NOTE(2016-05-12): nothing to return because setnames operates on the data.table passed?
-    return(0)
-}

@@ -6,6 +6,9 @@
 \usage{
 choose_first_nonmissing(colvalues)
 }
+\arguments{
+\item{colvalues}{columns to combine}
+}
 \description{
 Choose first non-missing
 }

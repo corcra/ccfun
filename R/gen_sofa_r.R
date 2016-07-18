@@ -42,7 +42,9 @@ gen_sofa_r <- function(dt, pf_, ppv_ = NULL) {
 
     # Define conditions via dummy vars
     # Default ppv to FALSE unless not missing AND TRUE
-    if (!is.null(pars$ppv_)) dt[, ppv_0 := ifelse(!is.na(get(ppv_)), get(ppv_), FALSE)]
+    if (!is.null(pars$ppv_)) {
+        dt[, ppv_0 := ifelse(!is.na(get(ppv_)), get(ppv_), FALSE)]
+    }
 
     # Update based on conditions
     # Order of conditions is IMPORTANT

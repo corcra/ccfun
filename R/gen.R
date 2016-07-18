@@ -49,6 +49,7 @@ gen_map <- function(bps, bpd) {
 }
 
 #' Choose first non-missing
+#' @param colvalues columns to combine
 #' @export
 choose_first_nonmissing <- function(colvalues) {
     # library(purrr)
