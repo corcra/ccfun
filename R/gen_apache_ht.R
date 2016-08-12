@@ -12,7 +12,7 @@
  
 #'  @export
 
-gen_apache_ht <- function(dt, input, output = NULL) {
+gen_apache_ht <- function(dt, input, haemoglobin = TRUE, vgm = 3,  output = NULL) {
   #  =======================
   #  = APACHE - Hematocrit =
   #  =======================
@@ -33,7 +33,6 @@ gen_apache_ht <- function(dt, input, output = NULL) {
   }
   dt[, (output) := suppressWarnings(as.numeric(NA))]
   
-
   # Set mf variable as numeric
   if (is.factor(dt[,get(input)])) {
     dt[, `:=`(dummy_variable = suppressWarnings(as.numeric(as.character(get(input)))))]
@@ -46,17 +45,32 @@ gen_apache_ht <- function(dt, input, output = NULL) {
   # Update based on conditions
   # Order of conditions is IMPORTANT
   
+  
+    
+  
   # APACHE = 0
-  dt[(get(input) > c(29)),   (output) := 0]
+  ifelse(is.true(heamoglobin), 
+         dt[(get(input) > c(29/vgm)), (output) := 0],
+         dt[(get(input) > c(29)), (output) := 0]
+  )
 
   # APACHE = 1
-  dt[(get(input) > c(45.9)), (output) := 1]
+  ifelse(is.true(heamoglobin),
+         dt[(get(input) > c(45.9/vgm)), (output) := 1],
+         dt[(get(input) > c(45.9)), (output) := 1],
+  )
 
   # APACHE = 2
-  dt[(get(input) < c(30)) | (get(input) > c(49.9)), (output) := 2]
+  ifelse(is.true(heamoglobin),
+         dt[(get(input) < c(30/vgm)) | (get(input) > c(49.9/vgm)), (output) := 2],
+         dt[(get(input) < c(30)) | (get(input) > c(49.9)), (output) := 2]
+  )
 
   # APACHE = 4
-  dt[(get(input) < c(20)) | (get(input) > c(59.9)), (output) := 4]
+  ifelse(is.true(heamoglobin),
+         dt[(get(input) < c(20/vgm)) | (get(input) > c(59.9/vgm)), (output) := 4],
+         dt[(get(input) < c(20)) | (get(input) > c(59.9)), (output) := 4]
+  )
 
 }
   

@@ -16,6 +16,7 @@
 
 
 #' @export
+
 gen_sofa_c <- function(dt, map_, norad_, adr_=NULL, dopa_=NULL, dobu_=NULL, vasop_=NULL) {
     #  =========================
     #  = SOFA - cardiovascular =
@@ -32,6 +33,7 @@ gen_sofa_c <- function(dt, map_, norad_, adr_=NULL, dopa_=NULL, dobu_=NULL, vaso
 
     map_ <- as.character(pars$map_)
     norad_ <- as.character(pars$norad_)
+
     if (!is.null(pars$adr_)) adr_ <- as.character(pars$adr_)
     if (!is.null(pars$dopa_)) dopa_ <- as.character(pars$dopa_)
     if (!is.null(pars$dobu_)) dobu_ <- as.character(pars$dobu_)
