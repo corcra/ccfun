@@ -12,7 +12,7 @@
  
 #'  @export
 
-gen_apache_ht <- function(dt, input, haemoglobin = TRUE, vgm = 3,  output = NULL) {
+gen_apache_ht <- function(dt, input, haemoglobin = TRUE, vgm = 0.3,  output = NULL) {
   #  =======================
   #  = APACHE - Hematocrit =
   #  =======================
@@ -25,7 +25,8 @@ gen_apache_ht <- function(dt, input, haemoglobin = TRUE, vgm = 3,  output = NULL
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  input <- pars$input
+  pars$input <- input
+
   
   # Set to ht by default (numeric)
   if(is.null(output)) {
@@ -49,28 +50,33 @@ gen_apache_ht <- function(dt, input, haemoglobin = TRUE, vgm = 3,  output = NULL
     
   
   # APACHE = 0
-  ifelse(is.true(heamoglobin), 
-         dt[(get(input) > c(29/vgm)), (output) := 0],
+  if(haemoglobin == T){ 
+         dt[(get(input) > c(29/vgm)), (output) := 0]
+  }else{
          dt[(get(input) > c(29)), (output) := 0]
-  )
+  }
+  
 
   # APACHE = 1
-  ifelse(is.true(heamoglobin),
-         dt[(get(input) > c(45.9/vgm)), (output) := 1],
-         dt[(get(input) > c(45.9)), (output) := 1],
-  )
+  if(haemoglobin == T){ 
+         dt[(get(input) > c(45.9/vgm)), (output) := 1]
+  }else{
+         dt[(get(input) > c(45.9)), (output) := 1]
+  }
 
   # APACHE = 2
-  ifelse(is.true(heamoglobin),
-         dt[(get(input) < c(30/vgm)) | (get(input) > c(49.9/vgm)), (output) := 2],
+  if(haemoglobin == T){ 
+         dt[(get(input) < c(30/vgm)) | (get(input) > c(49.9/vgm)), (output) := 2]
+  }else{
          dt[(get(input) < c(30)) | (get(input) > c(49.9)), (output) := 2]
-  )
+  }
 
   # APACHE = 4
-  ifelse(is.true(heamoglobin),
-         dt[(get(input) < c(20/vgm)) | (get(input) > c(59.9/vgm)), (output) := 4],
+  if(haemoglobin == T){ 
+         dt[(get(input) < c(20/vgm)) | (get(input) > c(59.9/vgm)), (output) := 4]
+  }else{
          dt[(get(input) < c(20)) | (get(input) > c(59.9)), (output) := 4]
-  )
+  }
 
 }
   

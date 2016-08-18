@@ -30,7 +30,7 @@ gen_apache_rr <- function(dt, input, output = NULL) {
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  input <- pars$input
+  pars$input <- input 
   
   # Set to NA by default (numeric)
   if(is.null(output)) {
@@ -42,9 +42,9 @@ gen_apache_rr <- function(dt, input, output = NULL) {
 
   # Set input variable as numeric
   if (is.factor(dt[,get(input)])) {
-    dt[, `:=`(RR = suppressWarnings(as.numeric(as.character(get(input)))))]
-    dt[, input :=  RR, with = F]
-    dt[, RR := NULL]
+    dt[, `:=`(dummy_variable = suppressWarnings(as.numeric(as.character(get(input)))))]
+    dt[, input :=  dummy_variable, with = F]
+    dt[, dummy_variable := NULL]
   }
     
   

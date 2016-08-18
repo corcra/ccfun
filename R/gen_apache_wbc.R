@@ -25,7 +25,7 @@ gen_apache_wbc <- function(dt, input, output = NULL) {
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  input <- pars$input
+  pars$input <- 
   
   # Set to wbc by default (numeric)
   if(is.null(output)) {
@@ -47,16 +47,16 @@ gen_apache_wbc <- function(dt, input, output = NULL) {
   # Order of conditions is IMPORTANT
   
   # APACHE = 0
-  dt[(get(input) > c(2999)),   (output) := 0]
+  dt[(get(input) > c(2.999)),   (output) := 0]
 
   # APACHE = 1
-  dt[(get(input) > c(14999)), (output) := 1]
+  dt[(get(input) > c(14.999)), (output) := 1]
 
   # APACHE = 2
-  dt[(get(input) < c(3000)) | (get(input) > c(19999)), (output) := 2]
+  dt[(get(input) < c(3.000)) | (get(input) > c(19.999)), (output) := 2]
 
   # APACHE = 4
-  dt[(get(input) < c(1000)) | (get(input) > c(39999)), (output) := 4]
+  dt[(get(input) < c(1.000)) | (get(input) > c(39.999)), (output) := 4]
 
 }
   

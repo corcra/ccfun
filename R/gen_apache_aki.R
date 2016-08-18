@@ -13,7 +13,10 @@
  
 #'  @export
 
-gen_apache_aki <- function(dt, input,with_ckd = F, output = NULL) {
+
+
+
+gen_apache_aki <- function(dt, input, crrt, output = NULL) {
   #  ================================
   #  = APACHE - Acute Kidney Injury =
   #  ================================
@@ -26,12 +29,15 @@ gen_apache_aki <- function(dt, input,with_ckd = F, output = NULL) {
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  input <- pars$input
+  pars$input <- input  
+  pars$crrt <- crrt
   
   # Set to aki by default (numeric)
   if(is.null(output)) {
     output <- "apache_aki"
   }
+  
+  
   dt[, (output) := suppressWarnings(as.numeric(NA))]
   
 
@@ -62,8 +68,9 @@ gen_apache_aki <- function(dt, input,with_ckd = F, output = NULL) {
   # APACHE = 4
   dt[(get(input) > c(304)), (output) := 4]
   
-  # with_ckd = T
-  dt[with_ckd == T,(output) := get(output)*2]
+  # crrt
+  dt[get(crrt) < 1, (output) := get(output)*2]
+  
 }
   
   

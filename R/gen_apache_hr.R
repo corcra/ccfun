@@ -27,7 +27,7 @@ gen_apache_hr <- function(dt, input, output = NULL) {
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  input <- pars$input
+  pars$input <- input 
   
   # Set to NA by default (numeric)
   if(is.null(output)) {

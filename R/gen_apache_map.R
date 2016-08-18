@@ -27,14 +27,14 @@ gen_apache_map <- function(dt, input, output = NULL) {
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  input <- pars$input
+  pars$input <- input
   
   # Set to NA by default (numeric)
   if(is.null(output)) {
     output <- "apache_map"
   }
 
-  dt[, (output) := suppressWarnings(as.numeric(NA))]
+  #dt[, (output) := suppressWarnings(as.numeric(NA))]
   
 
   # Set rr_ variable as numeric

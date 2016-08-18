@@ -25,12 +25,13 @@ gen_apache_gcs <- function(dt, input, output = NULL) {
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  input <- pars$input
+  pars$input <- input
   
   # Set to gcs by default (numeric)
   if(is.null(output)) {
     output <- "apache_gcs"
   }
+  
   dt[, (output) := suppressWarnings(as.numeric(NA))]
   
 
