@@ -5,14 +5,18 @@
 #'
 #' @import data.table
 #' @param dt data.table containing physiology data
-#' @param output Column Kme for the result of computation
-#' @param input a vector of numeric data
+#' @param format Strings. The format that have been chosen by the users at naming the fields of the datatable.
+#' see relabelcols for more informations.
+
 #'
+#' @examples
+#' # system.time(gen_apache_K(ddata, format = "dataItem"))
+#' # table(ddata$apache_K, useNA="always")
 
  
 #'  @export
 
-gen_apache_K <- function(dt, input, output = NULL) {
+gen_apache_K <- function(dt, format = "dataItem") {
   #  ======================
   #  = APACHE - Potassium =
   #  ======================
@@ -23,43 +27,33 @@ gen_apache_K <- function(dt, input, output = NULL) {
   # data.table changes the object in place unless you use dt1 <- copy(dt)
   # so passing data.tables via function is actually just passing a reference
   
-  # Non-standard evaluation
-  pars <- as.list(match.call()[-1])
-  pars$input <- input  
+  # Naming  the apache_K
+  apache_K <- "apache_K"
   
-  # Set to K by default (numeric)
-  if(is.null(output)) {
-    output <- "apache_K"
-  }
-  dt[, (output) := suppressWarnings(as.numeric(NA))]
+  # Prioritize the value to take into account for the temperature
   
-
-  # Set mf variable as numeric
-  if (is.factor(dt[,get(input)])) {
-    dt[, `:=`(dummy_variable = suppressWarnings(as.numeric(as.character(get(input)))))]
-    dt[, (input) :=  dummy_variable, with = F]
-    dt[, dummy_variable := NULL]
-  }
-
-  # Define conditions via dummy vars
+  switch(format, dataItem =  {K <- "Potassium"}, 
+         NIHCC =     {K <- "NIHR_HIC_ICU_0171"},
+         shortName = {stop("shortName is'nt defined for potassium variable")}
+  )
   
   # Update based on conditions
   # Order of conditions is IMPORTANT
   
   # APACHE = 0
-  dt[(get(input) > c(3.4)), (output) := 0]
+  dt[(get(K) > c(3.4)), (apache_K) := 0]
 
   # APACHE = 1
-  dt[(get(input) > c(2.9)), (output) := 1]
+  dt[(get(K) > c(2.9)), (apache_K) := 1]
 
   # APACHE = 2
-  dt[(get(input) < c(3))  | (get(input) > c(5.4)), (output) := 2]
+  dt[(get(K) < c(3))  | (get(K) > c(5.4)), (apache_K) := 2]
 
   # APACHE = 3
-  dt[(get(input) > c(5.9)), (output) := 3]
+  dt[(get(K) > c(5.9)), (apache_K) := 3]
   
   # APACHE = 4
-  dt[(get(input) < c(2.5))  | (get(input) > c(6.9)), (output) := 4]
+  dt[(get(K) < c(2.5))  | (get(K) > c(6.9)), (apache_K) := 4]
 
 }
 

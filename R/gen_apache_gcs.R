@@ -5,14 +5,18 @@
 #'
 #' @import data.table
 #' @param dt data.table containing physiology data
-#' @param output Column Name for the result of computation
-#' @param input a vector of numeric data
+#' @param format Strings. The format that have been chosen by the users at naming the fields of the datatable.
+#' see relabelcols for more informations.
+#' 
+#' @examples
+#' # system.time(gen_apache_wbc(ddata, format = "dataItem"))
+#' # table(ddata$apache_wbc, useNA="always")
 #'
 
  
 #'  @export
 
-gen_apache_gcs <- function(dt, input, output = NULL) {
+gen_apache_gcs <- function(dt, format = "dataItem") {
   #  ===============================
   #  = APACHE - Glasgow Coma Scale =
   #  ===============================
@@ -23,33 +27,21 @@ gen_apache_gcs <- function(dt, input, output = NULL) {
   # data.table changes the object in place unless you use dt1 <- copy(dt)
   # so passing data.tables via function is actually just passing a reference
   
-  # Non-standard evaluation
-  pars <- as.list(match.call()[-1])
-  pars$input <- input
+  # Naming  the apache_gcs
+  apache_gcs <- "apache_gcs"
   
-  # Set to gcs by default (numeric)
-  if(is.null(output)) {
-    output <- "apache_gcs"
-  }
-  
-  dt[, (output) := suppressWarnings(as.numeric(NA))]
-  
+  # Prioritize the value to take into account for Glasgow Coma Scale Score
+  switch(format, dataItem =  {gcs <- "GCS - total"}, 
+         NIHCC =     {gcs <- "NIHR_HIC_ICU_0156"},
+         shortName = {gcs <- "gcs"}
+  )
 
-  # Set mf variable as numeric
-  if (is.factor(dt[,get(input)])) {
-    dt[, `:=`(dummy_variable = suppressWarnings(as.numeric(as.character(get(input)))))]
-    dt[, (input) :=  dummy_variable, with = F]
-    dt[, dummy_variable := NULL]
-  }
-
-  # Define conditions via dummy vars
   
   # Update based on conditions
   # Order of conditions is IMPORTANT
   
   # APACHE = 15- GCS
-  dt[,   (output) := round(15 - get(input),0)]
-  dt[get(output) > 12, (output) := 12]
+  dt[,   (apache_gcs) := round(15 - get(gcs),0)]
 }
   
   

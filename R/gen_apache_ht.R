@@ -5,14 +5,17 @@
 #'
 #' @import data.table
 #' @param dt data.table containing physiology data
-#' @param output Column Name for the result of computation
-#' @param input a vector of numeric data
+#' @param format Strings. The format that have been chosen by the users at naming the fields of the datatable.
+#' see relabelcols for more informations.
 #'
+#' @examples
+#' # system.time(gen_apache_ht(ddata, format = "dataItem"))
+#' # table(ddata$apache_ht, useNA="always")
 
  
 #'  @export
 
-gen_apache_ht <- function(dt, input, haemoglobin = TRUE, vgm = 0.3,  output = NULL) {
+gen_apache_ht <- function(dt, format = "dataItem") {
   #  =======================
   #  = APACHE - Hematocrit =
   #  =======================
@@ -23,60 +26,29 @@ gen_apache_ht <- function(dt, input, haemoglobin = TRUE, vgm = 0.3,  output = NU
   # data.table changes the object in place unless you use dt1 <- copy(dt)
   # so passing data.tables via function is actually just passing a reference
   
-  # Non-standard evaluation
-  pars <- as.list(match.call()[-1])
-  pars$input <- input
-
+  # Naming  the apache_ht
+  apache_ht <- "apache_ht"
   
-  # Set to ht by default (numeric)
-  if(is.null(output)) {
-    output <- "apache_ht"
-  }
-  dt[, (output) := suppressWarnings(as.numeric(NA))]
   
-  # Set mf variable as numeric
-  if (is.factor(dt[,get(input)])) {
-    dt[, `:=`(dummy_variable = suppressWarnings(as.numeric(as.character(get(input)))))]
-    dt[, (input) :=  dummy_variable, with = F]
-    dt[, dummy_variable := NULL]
+  if (!"d_ht" %in% names(data)){
+   stop("Haematocrit variable unavailable, see gen_haemo for mor informations")
   }
-
-  # Define conditions via dummy vars
+  
   
   # Update based on conditions
   # Order of conditions is IMPORTANT
   
-  
-    
-  
   # APACHE = 0
-  if(haemoglobin == T){ 
-         dt[(get(input) > c(29/vgm)), (output) := 0]
-  }else{
-         dt[(get(input) > c(29)), (output) := 0]
-  }
+  dt[d_ht > c(0.29), (apache_ht) := 0]
   
-
   # APACHE = 1
-  if(haemoglobin == T){ 
-         dt[(get(input) > c(45.9/vgm)), (output) := 1]
-  }else{
-         dt[(get(input) > c(45.9)), (output) := 1]
-  }
+  dt[(d_ht > c(0.459)), (apache_ht) := 1]
 
   # APACHE = 2
-  if(haemoglobin == T){ 
-         dt[(get(input) < c(30/vgm)) | (get(input) > c(49.9/vgm)), (output) := 2]
-  }else{
-         dt[(get(input) < c(30)) | (get(input) > c(49.9)), (output) := 2]
-  }
+  dt[(d_ht < c(0.30)) | (d_ht > c(0.499)), (apache_ht) := 2]
 
   # APACHE = 4
-  if(haemoglobin == T){ 
-         dt[(get(input) < c(20/vgm)) | (get(input) > c(59.9/vgm)), (output) := 4]
-  }else{
-         dt[(get(input) < c(20)) | (get(input) > c(59.9)), (output) := 4]
-  }
+  dt[(d_ht < c(0.20)) | (d_ht > c(0.599)), (apache_ht) := 4]
 
 }
   

@@ -1,7 +1,8 @@
-#' @title Generates the APACHE Admission Type score
+#' @title Generates the APACHE Chronic Health score
 #'
 #' @description
-#' Generates the APACHE Age score; requires at least one respiratory rate input
+#' Generates the APACHE Chronic Health score; requires 15 comorbidity variables as inputs. A warning is
+#' displayed in case of missing fields
 #'
 #' @import data.table
 #' @param dt data.table containing physiology data
@@ -9,16 +10,28 @@
 #' P: Planned transfer in ; S: planned local Surgical admission ; M: planned local Medical admission ;
 #' R: Repatriation. character
 #' @param surgery Type of surgery.M: Emergency ; U: Urgent ; S: Scheduled ; L: eLective
-#' @param Comorbidity Chronic Health Status. Binary. 
-#' @param output Column name for the result of computation.
+#' @param Comorbidity Chronic Health Status. Numerical. Needs a derived comorbidity score. See gen_comorbidity.
 #'
 #' @examples
+#' dt <- NULL
+#' dt$"Admission type" <- c(sample(c("L", "U", "P", "S", "M", "R"), 200, replace = T))
+#' dt$"classification of surgery" <- c(sample(c("M", "U", "S", "L"), 200, replace = T))
+#' dt$"d_comorbidity" <- c(sample(c(0, 1, 2, 3, 4, NA), 200, replace = T))
+#' dt <- as.data.table(dt)
+#' gen_apache_chronic(dt, admission = "Admission type", surgery = "classification of surgery")
+#' dt[, .N, by = b_comorbidity]
+#' dt[, .N, by = apache_chronic]
 
 
 #'  @export
 
 
-gen_apache_chronic <- function(dt, admission, surgery , Comorbidity, output = NULL) {
+
+# TO DO:
+# To build link between any function already built
+
+
+gen_apache_chronic <- function(dt, admission, surgery) {
   #  =========================================================
   #  = APACHE - Chronic Health Assessment and Admission Type =
   #  =========================================================
@@ -49,35 +62,40 @@ gen_apache_chronic <- function(dt, admission, surgery , Comorbidity, output = NU
   
   # Non-standard evaluation
   pars <- as.list(match.call()[-1])
-  # input <- pars$input
+  pars$admission <- admission
+  pars$surgery <- surgery
+  b_comorbidity <- "b_comorbidity"
+
   
-  # Set to NA by default (numeric)
-  if(is.null(output)) {
-    output <- "apache_chronic"
-  }
   
-  dt[, (output) := suppressWarnings(as.numeric(NA))]
-  
-    
   # Update based on conditions
   # Order of conditions is IMPORTANT
   
+  if ("d_comorbidity" %in% names(dt)){
+    dt[, (b_comorbidity) := 0]
+    dt[!is.na(`d_comorbidity`) & `d_comorbidity` > 0, (b_comorbidity) := 1]
+    dt[!is.na(`d_comorbidity`) & `d_comorbidity` == 0, (b_comorbidity) := 0]
+    dt[is.na(`d_comorbidity`), (b_comorbidity) := NA]
+  }else{
+    stop("derived comorbidity field is requested")
+  }
   
-  # APACHE = 0
-  dt[Comorbidity %in% NA, (output) := NA]
-  
-  # APACHE = 0
-  dt[Comorbidity == 0, (output) := 0]
-  
-  # APACHE = 2
-  dt[Comorbidity > 0 & (get(admission) %in% c("S") | get(surgery) %in% c("S") | get(surgery) %in% c("L")) , (output) := 2]
-  
-  # APACHE = 5
-  dt[Comorbidity > 0 & (get(admission) %in% c("M") | get(admission) %in% c("L") 
-                         | get(surgery) %in% c("U") | get(surgery) %in% c("M")), (output) := 5]
-  
-  dt[, Comorbidity := NULL]
-  
+  apache_chronic <- "apache_chronic"
 
+
+  # APACHE = 0
+  dt[, (apache_chronic) := 0]
+
+  # APACHE = 2
+  dt[b_comorbidity > 0 & (get(admission) %in% c("S") | get(surgery) %in% c("S") | get(surgery) %in% c("L")) ,
+     (apache_chronic) := 2]
+
+  # APACHE = 5
+  dt[b_comorbidity > 0 & (get(admission) %in% c("M") | get(admission) %in% c("L") | get(surgery) %in% c("U") | get(surgery) %in% c("M")),
+     (apache_chronic) := 5]
+
+  # APACHE = NA
+  dt[is.na(`b_comorbidity`), (apache_chronic) := NA]
+  
 }
 
