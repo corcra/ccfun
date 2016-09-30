@@ -26,12 +26,16 @@ relabel_cols <- function(dt, label.in, label.out, dict=NULL) {
   if (is.null(dict)) {
     # Checks the ccdata package has loaded the ccdata.env
     # This will be used to relabel the columns
-    stopifnot(exists("ccdata.env"))
+    warning(exists("ccdata.env"))
+    path <- paste0(system.file("data", package = "ccdata"), "/ITEM_REF.yaml")
+    assert_that(file.exists(path))
+    ccdata.dict <- yaml::yaml.load_file(path)
     # If using ITEM_REF.yaml then only the following labels are valid
     # label.in <- "dataItem"
     # label.out <- "NHICcode"
     stopifnot(all(c(label.in, label.out) %in% c("dataItem", "NHICcode", "shortName")))
-    dict <- ccdata.env$ITEM_REF
+    # dict <- ccdata.env$ITEM_REF
+    dict <- ccdata.dict
   }
   else {
     # Make sure dictionary is a list
@@ -77,6 +81,7 @@ dict_translate <- function(dict, value.a, label.in, label.out) {
     # Look up the index
     X <- purrr::map(dict, label.in)
     X <- sapply(X, function(x) if(is.null(x)) {return(NA)} else (return(x)))
+    stopifnot(length(dict)==length(X))
     i <- match(value.a, X)
     # Use the index to return the value for the sublist element named label.out
     value.b <- (dict[i][[1]][[label.out]])
