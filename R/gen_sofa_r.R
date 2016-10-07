@@ -44,6 +44,9 @@ gen_sofa_r <- function(dt, pf_, ppv_ = NULL) {
     # Default ppv to FALSE unless not missing AND TRUE
     if (!is.null(pars$ppv_)) {
         dt[, ppv_0 := ifelse(!is.na(get(ppv_)), get(ppv_), FALSE)]
+    } else {
+        warning("*** No indicator variable for mechanical ventilation: sofa_r max <=2")
+        dt[, ppv_0 := FALSE]
     }
 
     # Update based on conditions

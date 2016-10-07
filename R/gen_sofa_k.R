@@ -53,11 +53,11 @@ gen_sofa_k <- function(dt, creat_, uvol24h_ = NULL) {
 
     # SOFA = 3
     dt[get(creat_) >= 300, "sofa_k" := 3]
-    if (!is.null(uvol24h_)) dt[get(uvol24h_) < 500, "sofa_c" := 3]
+    if (!is.null(uvol24h_)) dt[get(uvol24h_) < 500, "sofa_k" := 3]
 
     # SOFA = 4
     dt[get(creat_) >  440, "sofa_k" := 4]
-    if (!is.null(uvol24h_)) dt[get(uvol24h_) < 200, "sofa_c" := 4]
+    if (!is.null(uvol24h_)) dt[get(uvol24h_) < 200, "sofa_k" := 4]
 
 }
 
