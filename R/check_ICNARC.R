@@ -13,7 +13,7 @@
 
 if (!exists("icnarcTree")) {
     path <- system.file("data", "icnarc.rds", package="ccfun") 
-    icnarcTree <- readRDS("icnarc.rds")
+    icnarcTree <- readRDS(path)
 }
 
 #' Check if input is a valid ICNARC code

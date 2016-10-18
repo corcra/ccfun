@@ -3,14 +3,13 @@
 #' @description 
 #' Split text codes by level and then label as per ICNARC codes
 #'
-#' @import data.table
 #' @param dt data.table containing diagnostic codes to be parsed
 #' @param dc.col column name within data table with diagnostic codes 
 #' @param prefix new diagnostic component column prefix after parsing
 #'
 
-#' @export
 #' Split ICNARC text code, and convert to numeric
+#' @export split.icnarc.code
 split.icnarc.code <- function(dt, dc.col, prefix=NULL) {
     # Split each code into components and convert to numeric to handle padding
     if (is.null(prefix)) {
@@ -22,8 +21,8 @@ split.icnarc.code <- function(dt, dc.col, prefix=NULL) {
     # return(dt)
 }
 
-#' @export
 #' Split and label ICNARC diagnostic code
+#' @export parse.icnarc.code
 parse.icnarc.code <- function(dt, dc.col, prefix=NULL) {
   icnarc.dc <- icnarc.dc.load()
   icnarc.dc <- split.icnarc.code(icnarc.dc, "icnarc.dc")
@@ -39,22 +38,6 @@ parse.icnarc.code <- function(dt, dc.col, prefix=NULL) {
 
   return(dt)
 }
-# rm(tdt)
-# wdt[,dc1.2 := NULL]
-# names(wdt)
-# tdt <- copy(wdt)
-# tdt <- parse.icnarc.code(tdt, "diag_admx1", prefix="foo")
-# names(tdt)
-
-# icnarc.dc
-# str(icnarc.dc)
-
-# lookfor(diag, wdt)
-# # Work just with primary reason for admission
-
-# icnarc.dc.organs(tdt, dc.2.col="dc.2")
-# tdt[, lapply(.SD, head, 1), by=id, .SDcols=c("condition", "dc.2")]
-
 
 # Load ICNARC diagnostic code info
 # helper function
@@ -72,8 +55,8 @@ icnarc.dc.load <- function() {
 }
 
 
-#' @export
 #' Label up ICNARC surgical level code
+#' @export label.icnarc.dc.1
 label.icnarc.dc1 <- function(dt, dc.1.col="dc.1") {
     # Add organ coding labels # as factor labels
     # 1 - A condition where surgery has been performed (Surgical code)
@@ -87,8 +70,8 @@ label.icnarc.dc1 <- function(dt, dc.1.col="dc.1") {
     dt[, (dc.1.col) := factor(get(dc.1.col), levels=i$dc.1, labels=i$llabel)]
 }
 
-#' @export
 #' Label up ICNARC organ level code
+#' @export label.icnarc.dc2
 label.icnarc.dc2 <- function(dt, dc.2.col="dc.2") {
     # Add organ coding labels # as factor labels
     i <- data.table(
