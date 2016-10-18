@@ -18,5 +18,6 @@ Imports:
     purrr
 Suggests:
     ggplot2,
-    dplyr
+    dplyr,
+    testthat
 RoxygenNote: 5.0.1

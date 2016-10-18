@@ -1,4 +1,6 @@
 # Critical care HIC project functions
+[![Build
+Status](https://travis-ci.org/UCL-HIC/ccfun.svg?branch=master)](https://travis-ci.org/UCL-HIC/ccfun)
 
 - ccfun.R: description file only
 - ggMMplot.R: mosaic plot using the ggplot library

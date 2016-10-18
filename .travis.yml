@@ -1,0 +1,16 @@
+language: r
+cache: packages
+sudo: false
+
+r_packages:
+  - roxygen2
+  - devtools
+  - XML
+  - yaml
+  - covr
+
+script:
+  - Rscript -e 'library(devtools); checkOutput <- data.frame(test()); if (sum(checkOutput["failed"]) + sum(checkOutput[["error"]]) > 0){q(status = 1, save = "no")}'
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
