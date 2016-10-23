@@ -12,9 +12,9 @@ test_that("Check DKA", {
         as.numeric(d[,.(dc.1,dc.2,dc.3,dc.4,dc.5)]))
     d <- parse.icnarc.code(d, "code")
     expect_equivalent(d$condition, d$diag)
-    d <- label.icnarc.dc1(d)
+    # d <- label.icnarc.dc1(d)
     expect_equivalent(as.character(d$dc.1), "non-surgical condition")
-    d <- label.icnarc.dc2(d)
+    # d <- label.icnarc.dc2(d)
     expect_equivalent(as.character(d$dc.2), "Endocrine, Metabolic, Thermoregulation and Poisoning")
 
 })

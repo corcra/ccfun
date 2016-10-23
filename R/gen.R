@@ -1,6 +1,8 @@
 #' Various helper functions that GENerate derived variables
 #'
 
+#' @param new.col name for mortality variable
+#' @param old.col name for existing mortality variable
 
 #  =================================
 #  = Positive pressure ventilation =
@@ -55,5 +57,123 @@ choose_first_nonmissing <- function(colvalues) {
     # library(purrr)
     reduce(colvalues, function(x,y) ifelse(!is.na(x), x, y))
 }
+
+
+#' @export
+gen_admx.cat <- function(dt, var.name="adm.cat",
+    adm.col="NIHR_HIC_ICU_0398",
+    loca.col="NIHR_HIC_ICU_0068") {
+    wdt[get(adm.col) == "L", adm.cat := "Elective surgery"]
+    wdt[get(adm.col) != "L" & get(loca.col) == "T", adm.cat := "Emergency surgery"]
+    wdt[get(adm.col) != "L" & get(loca.col) != "T", adm.cat := "Emergency medical"]
+}
+# gen_admx.cat(wdt)
+
+#  ========================
+#  = Past medical history =
+#  ========================
+
+#' @export
+gen_pmhx.sum <- function(dt, pmhx.cols=pmhx.cols) {
+    if (is.null(pmhx.cols)) {
+        pmhx <- c(
+            "pmhx_chemo",
+            "pmhx_dxt",
+            "pmhx_immuncomp",
+            "pmhx_leuk_acute",
+            "pmhx_leuk_chronic",
+            "pmhx_lymphoma",
+            "pmhx_metastatic",
+            "pmhx_crrt",
+            "pmhx_cirrhosis",
+            "pmhx_alf",
+            "pmhx_portal_htn",
+            "pmhx_hiv",
+            "pmhx_home_vent",
+            "pmhx_severe_rs",
+            "pmhx_steroids",
+            "pmhx_severe_cvs",
+            "pmhx_other") 
+    }  else {
+        pmhx <- pmhx.cols
+    }
+    dt[,(pmhx):=lapply(.SD,as.numeric),.SDcols=pmhx]
+    dt[, pmhx.sum := rowSums(.SD, na.rm=TRUE), .SDcols=pmhx]
+    # data.table works 'by reference' so no return
+}
+
+#  =============
+#  = Mortality =
+#  =============
+
+
+#' @export
+gen_mortality <- function(dt, new.col, old.col) {
+    if (new.col %in% names(dt)) dt[, (new.col) := NULL]
+    dt[, (new.col) := ifelse(get(old.col)=="D", 1, 0), with=FALSE]
+    dt[, (new.col) := factor(get(new.col),
+        levels=c(0L,1L),
+        labels=c("survived", "died"))]
+    table(dt[,get(new.col)])
+}
+
+
+#' @export
+gen_age <- function(dt, var.name="age",
+        dob.dt="NIHR_HIC_ICU_0033",
+        icu.in.ts="NIHR_HIC_ICU_0411",
+        sim=TRUE) {
+    
+    if (sim) {
+        dt[, (var.name) := rnorm(nrow(wdt), 65, 10)]
+    } else {
+        dt[, (var.name) := as.double(round((
+               as.Date(get(icu.in.ts)) - as.Date(get(dob.dt))
+               )/365, 2)),with=FALSE]
+    }
+}
+
+#  ==================
+#  = Length of stay =
+#  ==================
+
+#' @export
+gen_los.icu <- function(dt, var.name="los.icu",
+        icu.in.ts="NIHR_HIC_ICU_0411",
+        icu.dc.ts="NIHR_HIC_ICU_0412",
+        sim=TRUE) {
+    '
+    Generate ICU length of stay (hours)
+    '
+    if (sim) {
+        # check id and time available
+        assert_that(all(sapply(c("id", "time"), function(x) x %in% names(wdt))))
+        dt[, (var.name) := max(time, na.rm=TRUE), by=id]
+    } else {
+        dt[, (var.name) := get(icu.dc.ts) - get(icu.in.ts), with=FALSE]
+    }
+}
+
+#' @export
+gen_los.hosp <- function(dt, var.name="los.hosp",
+        hosp.in.dt="NIHR_HIC_ICU_0032",
+        hosp.dc.dt="NIHR_HIC_ICU_0406",
+        sim=TRUE) {
+    '
+    Generate hospital length of stay (days)
+    '
+    if (sim) {
+        # check id and time available
+        assert_that(all(sapply(c("id", "time"), function(x) x %in% names(wdt))))
+        wdt[, ("los.hosp") := (max(time, na.rm=TRUE) + runif(1,0,2400)) %/% 24
+            , by=id][,.(id,time,mort.icu,los.icu,los.hosp)]
+    } else {
+        dt[, (var.name) := get(hosp.dc.dt) - get(hosp.in.dt), with=FALSE]
+    }
+
+}
+
+
+
 
 

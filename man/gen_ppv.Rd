@@ -6,6 +6,11 @@
 \usage{
 gen_ppv(dt, t_ = time, id_ = id, rrate_ppv_)
 }
+\arguments{
+\item{new.col}{name for mortality variable}
+
+\item{old.col}{name for existing mortality variable}
+}
 \description{
 Various helper functions that GENerate derived variables
 }

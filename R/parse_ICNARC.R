@@ -35,6 +35,9 @@ parse.icnarc.code <- function(dt, dc.col, prefix=NULL) {
     setnames(dt, paste0("dc.", seq(5)), paste0(prefix, seq(5)) )
   }
 
+  label.icnarc.dc1(dt)
+  label.icnarc.dc2(dt)
+
   return(dt)
 }
 

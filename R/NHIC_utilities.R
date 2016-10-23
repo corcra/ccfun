@@ -6,11 +6,22 @@
 #' @param dict_ NHIC dictionary from YAML file
 #' @param k key
 #' @param v value
+#' @param f function returning logical
 #' @export
-which_NHIC <- function(k, v, dict_=dict) {
-  x <- names(Filter(function(y) (!is.null(y) && y == v) , purrr::map(dict_, k)))
-  return(x)
+which_NHIC <- function(k, v, f=NULL, dict_=dict) {
+    '
+    Return NHIC codes where value for key matches or f(value,value) returns TRUE
+    e.g. f <- function(y,v) grepl(v, y)
+    '
+
+    if (is.null(f)) {
+        x <- names(Filter(function(y) (!is.null(y) && y == v) , purrr::map(dict_, k)))
+    } else {
+        x <- names(Filter(function(y) (!is.null(y) && f(y,v)) , purrr::map(dict_, k)))
+    }
+    return(x)
 }
+
 
 #' Look for possible matches in NHIC dict
 # Works at just top level?

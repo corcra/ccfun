@@ -5,12 +5,14 @@
 \title{Utilities that might be of use for working with NHIC data
 Extract NHIC codes based on the value of a key:value pair in list}
 \usage{
-which_NHIC(k, v, dict_ = dict)
+which_NHIC(k, v, f = NULL, dict_ = dict)
 }
 \arguments{
 \item{k}{key}
 
 \item{v}{value}
+
+\item{f}{function returning logical}
 
 \item{dict_}{NHIC dictionary from YAML file}
 }
