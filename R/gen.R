@@ -139,11 +139,11 @@ gen_male <- function(dt, var.name="male",
             sex="NIHR_HIC_ICU_0093",
             sim=TRUE) {
     if (sim) {
-        dt[, (var.name) := rbinom(1,1,0.5), by=id]
+        dt[, (var.name) := as.logical(rbinom(1,1,0.5)), by=id]
     }
     else {
-        dt[tolower(get(sex)) == "m", (var.name) := 1]
-        dt[tolower(get(sex)) == "f", (var.name) := 0]
+        dt[tolower(get(sex)) == "m", (var.name) := TRUE]
+        dt[tolower(get(sex)) == "f", (var.name) := FALSE]
     }
 }
 # gen_male(wdt,sim=TRUE)
