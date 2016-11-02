@@ -63,9 +63,9 @@ choose_first_nonmissing <- function(colvalues) {
 gen_admx.cat <- function(dt, var.name="adm.cat",
     adm.col="NIHR_HIC_ICU_0398",
     loca.col="NIHR_HIC_ICU_0068") {
-    wdt[get(adm.col) == "L", adm.cat := "Elective surgery"]
-    wdt[get(adm.col) != "L" & get(loca.col) == "T", adm.cat := "Emergency surgery"]
-    wdt[get(adm.col) != "L" & get(loca.col) != "T", adm.cat := "Emergency medical"]
+    dt[get(adm.col) == "L", adm.cat := "Elective surgery"]
+    dt[get(adm.col) != "L" & get(loca.col) == "T", adm.cat := "Emergency surgery"]
+    dt[get(adm.col) != "L" & get(loca.col) != "T", adm.cat := "Emergency medical"]
 }
 # gen_admx.cat(wdt)
 
@@ -125,13 +125,31 @@ gen_age <- function(dt, var.name="age",
         sim=TRUE) {
     
     if (sim) {
-        dt[, (var.name) := rnorm(nrow(wdt), 65, 10)]
+        dt[, (var.name) := rnorm(1, 65, 10), by=id]
     } else {
         dt[, (var.name) := as.double(round((
                as.Date(get(icu.in.ts)) - as.Date(get(dob.dt))
                )/365, 2)),with=FALSE]
     }
 }
+# gen_age(wdt,sim=TRUE)
+
+#' @export
+gen_male <- function(dt, var.name="male",
+            sex="NIHR_HIC_ICU_0093",
+            sim=TRUE) {
+    if (sim) {
+        dt[, (var.name) := rbinom(1,1,0.5), by=id]
+    }
+    else {
+        dt[tolower(get(sex)) == "m", (var.name) := 1]
+        dt[tolower(get(sex)) == "f", (var.name) := 0]
+    }
+}
+# gen_male(wdt,sim=TRUE)
+# head(wdt[,.(id,time,male,age)])
+# wdt[id==sample(wdt$id,1),.(id,time,male,age)]
+# table(wdt$male)
 
 #  ==================
 #  = Length of stay =
