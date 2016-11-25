@@ -43,6 +43,18 @@ relabel_cols <- function(dt, label.in, label.out, dict=NULL) {
     # - [ ] TODO(2016-05-12): check that label.in and label.out are items in sublists
   }
 
+  # Check NHICcode in dictionary if needed
+  if ("NHICcode" == label.in | "NHICcode" == label.out) {
+    if (0==length(names(Filter(function(y) (!is.null(y)),
+          purrr::map(dict, "NHICcode"))))
+        ) {
+      fields <- names(dict)
+      for (i in 1:length(fields)) {
+          dict[[fields[i]]]$NHICcode <- fields[i]
+      }
+    }
+  }
+
   # Depends on data.table setnames function
   stopifnot("data.table" %in% class(dt))
 
