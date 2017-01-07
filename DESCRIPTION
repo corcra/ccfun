@@ -10,7 +10,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
-    data.tree,
     assertthat,
     data.table,
     yaml,
