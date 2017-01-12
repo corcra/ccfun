@@ -20,7 +20,3 @@ is.ccDict <- function(d) {
     stopifnot("NHICcode" %in% names(d[[1]]))
     return(TRUE)
 }
-
-# Development and testing
-# d <- load_ccDict("/Users/steve/usr/github/ccdata/data/ITEM_REF.yaml")
-# is.ccDict(d)
