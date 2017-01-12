@@ -14,7 +14,7 @@
 #' @export
 load_ccDict <- function(path=NULL) {
     if (is.null(path)) {
-        path <- paste0(system.file("data", package="ccdata"), "/ITEM_REF.yaml")
+      path <- system.file("conf/ITEM_REF.yaml", package = "ccdata")
     }
     assert_that(file.exists(path))
     ccdata.dict <- yaml::yaml.load_file(path)

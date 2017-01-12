@@ -27,7 +27,7 @@ relabel_cols <- function(dt, label.in, label.out, dict=NULL) {
     # Checks the ccdata package has loaded the ccdata.env
     # This will be used to relabel the columns
     warning(exists("ccdata.env"))
-    path <- paste0(system.file("data", package = "ccdata"), "/ITEM_REF.yaml")
+    path <- system.file("conf/ITEM_REF.yaml", package = "ccdata")
     assertthat::assert_that(file.exists(path))
     ccdata.dict <- yaml::yaml.load_file(path)
     # If using ITEM_REF.yaml then only the following labels are valid
@@ -104,4 +104,3 @@ dict_translate <- function(dict, value.a, label.in, label.out) {
         return(value.b)
     }
 }
-

@@ -93,7 +93,7 @@ gen_pmhx.sum <- function(dt, pmhx.cols=pmhx.cols) {
             "pmhx_severe_rs",
             "pmhx_steroids",
             "pmhx_severe_cvs",
-            "pmhx_other") 
+            "pmhx_other")
     }  else {
         pmhx <- pmhx.cols
     }
@@ -110,7 +110,7 @@ gen_pmhx.sum <- function(dt, pmhx.cols=pmhx.cols) {
 #' @export
 gen_mortality <- function(dt, new.col, old.col) {
     if (new.col %in% names(dt)) dt[, (new.col) := NULL]
-    dt[, (new.col) := ifelse(get(old.col)=="D", 1, 0), with=FALSE]
+    dt[!is.na(old.col), (new.col) := ifelse(get(old.col)=="D", 1, 0), with=FALSE]
     dt[, (new.col) := factor(get(new.col),
         levels=c(0L,1L),
         labels=c("survived", "died"))]
@@ -123,7 +123,7 @@ gen_age <- function(dt, var.name="age",
         dob.dt="NIHR_HIC_ICU_0033",
         icu.in.ts="NIHR_HIC_ICU_0411",
         sim=TRUE) {
-    
+
     if (sim) {
         dt[, (var.name) := rnorm(1, 65, 10), by=id]
     } else {
@@ -190,8 +190,3 @@ gen_los.hosp <- function(dt, var.name="los.hosp",
     }
 
 }
-
-
-
-
-
