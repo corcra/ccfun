@@ -12,30 +12,35 @@
 #' # gen_ppv makes a logical vector if positive pressure ventilated
 
 #' @export
-gen_ppv <- function(dt, t_=time, id_= id, rrate_ppv_) {
+gen_ppv <- function(dt, t_=time, id_= id, rrate_ppv_=NULL, ppv_=NULL, roll_limit_ = +Inf) {
     # - [ ] TODO(2016-05-20): add in airway and ventilated fields
-
+    # rrate_ppv_ = Total_Resp_Rate_Ventil (0146)
+    # ppv_ = ventilated (0144)
     # Non-standard evaluation
     pars <- as.list(match.call()[-1])
-
+    # print(pars)
     id_ <- as.character(pars$id_)
     t_ <- as.character(pars$t_)
     rrate_ppv_ <- as.character(pars$rrate_ppv_)
+    ppv_ <- as.character(pars$ppv_)
 
-    # need ccdata wide
-    # remember that data.table will copy as reference
-    # need a unique id (site+episode_id)
-    # plus time
-    # plus a series of columns or logical expression that can be used to define PPV
+    if (is.null(rrate_ppv_) & is.null(ppv_)) {
+      stop("Need at least one of ppv_ OR rrate_ppv_")
+    }
 
-    setkeyv(dt, c(id_, t_))
+
+    # Indicator var for ventiltion
     if ("ppv" %chin% names(dt)) dt[, `:=`(ppv =NULL)]
-    dt[, `:=`(
-        ppv = get(rrate_ppv_) > 0
-        ),
-        roll=+Inf, # roll forwards without limit
-        rollends=c(FALSE, TRUE) # roll forwards from the last value, but not back from first
-                 ]
+    dt[, ppv := as.logical(NA)]
+
+    # Update indicator if rrate_ppv_
+    if (!is.null(pars$rrate_ppv_)) {
+      dt[get(rrate_ppv_) > 0, ppv := TRUE]
+    }
+    # Update indicator if ventilator mode reported
+    if (!is.null(pars$ppv_)) {
+      dt[get(ppv_) %chin% c('1','2'), ppv := TRUE]
+    }
 }
 
 #  ==========================
