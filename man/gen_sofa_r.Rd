@@ -22,4 +22,3 @@ an indicator for postive pressure ventilation
 # ddata[pf_ratio<1000/7.6][sample(nrow(ddata[pf_ratio<1000/7.6]),20), .(pf_ratio, Total_Resp_Rate_Ventil, sofa_r)]
 # table(ddata$sofa_r, useNA="always")
 }
-

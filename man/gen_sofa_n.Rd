@@ -19,4 +19,3 @@ Generates the SOFA neuro score; requires GCS
 # table(ddata$sofa_n, useNA="always")
 # ddata[gcs<=15][sample(nrow(ddata[gcs<=15]),20), .(gcs, sofa_n)]
 }
-

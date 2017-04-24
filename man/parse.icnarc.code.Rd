@@ -9,4 +9,3 @@ parse.icnarc.code(dt, dc.col, prefix = NULL)
 \description{
 Split and label ICNARC diagnostic code
 }
-

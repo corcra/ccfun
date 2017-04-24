@@ -14,4 +14,3 @@ convert_numeric(dt, dict_ = dict)
 \description{
 Convert those columns to numeric
 }
-

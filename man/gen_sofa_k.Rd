@@ -23,4 +23,3 @@ Generates the SOFA renal score; requires creatinine and optionally urine
 # table(ddata$sofa_k, useNA="always")
 # ddata[creatinine < 500][sample(nrow(ddata[creatinine < 500]),20), .(creatinine, sofa_k)]
 }
-

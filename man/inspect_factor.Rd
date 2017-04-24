@@ -31,4 +31,3 @@ functions for the different data types available.
 #     geom_freqpoly(aes(x=val, y=..density.., colour=site_id),
 #    binwidth=1)
 }
-

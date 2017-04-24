@@ -15,4 +15,3 @@ Credit for initial iteration to
 [Edwin](http://stackoverflow.com/a/19258045/992999)
 This version adds color brewer options and tidies the labelling
 }
-

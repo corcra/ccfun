@@ -23,4 +23,3 @@ handles other vasopressors
 # table(ddata$sofa_c, useNA="always")
 # ddata[rx_adre<0.1][sample(nrow(ddata[rx_adre<0.1]),20), .(map, rx_norad, rx_adre, rx_dopa, rx_vasopr, rx_dobu, sofa_c)]
 }
-

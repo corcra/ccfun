@@ -16,4 +16,3 @@ clean_gcs(data, gcs_ = "gcs", sedatives_ = NULL, verbose = FALSE)
 \description{
 Cleans GCS score
 }
-

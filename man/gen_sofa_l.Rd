@@ -19,4 +19,3 @@ Generates the SOFA liver score; requires bilirubin
 # table(ddata$sofa_l, useNA="always")
 # ddata[bilirubin>100][sample(nrow(ddata[bilirubin>100]),20), .(bilirubin, sofa_l)]
 }
-

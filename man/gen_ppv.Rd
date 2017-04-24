@@ -4,7 +4,8 @@
 \alias{gen_ppv}
 \title{Various helper functions that GENerate derived variables}
 \usage{
-gen_ppv(dt, t_ = time, id_ = id, rrate_ppv_)
+gen_ppv(dt, t_ = time, id_ = id, rrate_ppv_ = NULL, ppv_ = NULL,
+  roll_limit_ = +Inf)
 }
 \arguments{
 \item{new.col}{name for mortality variable}
@@ -18,4 +19,3 @@ Various helper functions that GENerate derived variables
 # gen_ppv(ddata, time, id, Total_Resp_Rate_Ventil)
 # gen_ppv makes a logical vector if positive pressure ventilated
 }
-

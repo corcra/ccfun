@@ -16,4 +16,3 @@ find_NHIC(k, v, dict_ = dict)
 \description{
 Look for possible matches in NHIC dict
 }
-

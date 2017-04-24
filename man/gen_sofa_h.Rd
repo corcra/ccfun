@@ -19,4 +19,3 @@ Generates the SOFA haematology score; requires platelets
 # ddata[platelets<400][sample(nrow(ddata[platelets<400]),20), .(platelets, sofa_h)]
 # table(ddata$sofa_h, useNA="always")
 }
-

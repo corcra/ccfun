@@ -20,4 +20,3 @@ which_NHIC(k, v, f = NULL, dict_ = dict)
 Utilities that might be of use for working with NHIC data
 Extract NHIC codes based on the value of a key:value pair in list
 }
-

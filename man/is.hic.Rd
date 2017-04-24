@@ -19,4 +19,3 @@ it contains the 8 columns in the correct order
 \examples{
 # is.hic(d)
 }
-

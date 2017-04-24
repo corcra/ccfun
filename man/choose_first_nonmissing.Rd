@@ -12,4 +12,3 @@ choose_first_nonmissing(colvalues)
 \description{
 Choose first non-missing
 }
-

@@ -11,4 +11,3 @@ icnarc.dc.load()
 Load ICNARC diagnostic code info
 helper function
 }
-

@@ -4,9 +4,8 @@
 \alias{label.icnarc.dc2}
 \title{Label up ICNARC organ level code}
 \usage{
-\method{label}{icnarc.dc2}(dt, dc.2.col = "dc.2")
+label.icnarc.dc2(dt, dc.2.col = "dc.2")
 }
 \description{
 Label up ICNARC organ level code
 }
-

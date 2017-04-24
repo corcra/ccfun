@@ -22,4 +22,3 @@ Extract file from ccdata package if possible
 # ccdata.dict <- load_ccDict() # loads using default values
 # ccdata.dict <- load_ccDict("my/local/path") # alternative fall back path
 }
-

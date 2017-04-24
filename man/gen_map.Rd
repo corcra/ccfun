@@ -11,4 +11,3 @@ gen_map(bps, bpd)
 Generate MAP from blood pressure
 gen_map derives MAP
 }
-

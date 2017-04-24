@@ -4,9 +4,8 @@
 \alias{label.icnarc.dc1}
 \title{Label up ICNARC surgical level code}
 \usage{
-\method{label}{icnarc.dc1}(dt, dc.1.col = "dc.1")
+label.icnarc.dc1(dt, dc.1.col = "dc.1")
 }
 \description{
 Label up ICNARC surgical level code
 }
-
