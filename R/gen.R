@@ -157,19 +157,29 @@ gen_male <- function(dt, var.name="male",
 
 #' @export
 gen_los.icu <- function(dt, var.name="los.icu",
-        icu.in.ts="NIHR_HIC_ICU_0411",
-        icu.dc.ts="NIHR_HIC_ICU_0412",
-        sim=TRUE) {
-    '
-    Generate ICU length of stay (hours)
-    '
-    if (sim) {
-        # check id and time available
-        assert_that(all(sapply(c("id", "time"), function(x) x %in% names(wdt))))
-        dt[, (var.name) := max(time, na.rm=TRUE), by=id]
-    } else {
-        dt[, (var.name) := get(icu.dc.ts) - get(icu.in.ts), with=FALSE]
-    }
+                        icu.in.ts="NIHR_HIC_ICU_0411",
+                        icu.dc.ts="NIHR_HIC_ICU_0412",
+                        icu.dis="NIHR_HIC_ICU_0097",
+                        icu.dod.date="NIHR_HIC_ICU_0042",
+                        icu.dod.time="NIHR_HIC_ICU_0043",
+                        id.name="id",
+                        sim=TRUE) {
+  '
+  Generate ICU length of stay (hours)
+  '
+  
+  if (sim) {
+    # check id and time available
+    assert_that(all(sapply(c(id.name, "time"), function(x) x %in% names(dt))))
+    dt[, (var.name) := max(time, na.rm=TRUE), by=id.name]
+  } else {
+    # if alive on discharge, use 0412 for discharge time
+    dt[get(icu.dis)=='A', (var.name) := time_length(ymd_hms(get(icu.dc.ts)) - ymd_hms(get(icu.in.ts)), unit='hours')]
+    # if dead on discharge, use 0042 and 0043 for time + date of death (join into single string to parse as date-time)
+    dt[get(icu.dis)=='D', (var.name) := time_length(ymd_hms(str_c(get(icu.dod.date), get(icu.dod.time), sep=' '), truncated=1) - ymd_hms(get(icu.in.ts)), unit='hours')]
+    # WARNING/TODO: if brainstem death was declared, this will not work, as DOD is not recorded
+    #   need to check BSDTP, then use either DOD/TOD (as above) or DDBSD/TDBSD
+  }
 }
 
 #' @export
