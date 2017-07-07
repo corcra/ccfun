@@ -63,9 +63,9 @@ choose_first_nonmissing <- function(colvalues) {
 gen_admx.cat <- function(dt, var.name="adm.cat",
     adm.col="NIHR_HIC_ICU_0398",
     loca.col="NIHR_HIC_ICU_0068") {
-    dt[get(adm.col) == "L", adm.cat := "Elective surgery"]
-    dt[get(adm.col) != "L" & get(loca.col) == "T", adm.cat := "Emergency surgery"]
-    dt[get(adm.col) != "L" & get(loca.col) != "T", adm.cat := "Emergency medical"]
+    dt[get(adm.col) == "S", adm.cat := "Elective surgery"]
+    dt[get(adm.col) != "S" & get(loca.col) == "T", adm.cat := "Emergency surgery"]
+    dt[get(adm.col) != "S" & get(loca.col) != "T", adm.cat := "Emergency medical"]
 }
 # gen_admx.cat(wdt)
 
